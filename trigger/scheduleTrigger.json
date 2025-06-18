@@ -1,0 +1,26 @@
+{
+	"name": "scheduleTrigger",
+	"properties": {
+		"description": "run the sales pipeline every hour",
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pl_copy_sql_table",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Hour",
+				"interval": 1,
+				"startTime": "2025-06-17T21:09:00",
+				"endTime": "2025-06-17T23:29:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}

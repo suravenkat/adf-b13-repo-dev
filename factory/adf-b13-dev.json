@@ -1,0 +1,21 @@
+{
+	"name": "adf-b13-dev",
+	"properties": {
+		"globalParameters": {
+			"container": {
+				"type": "string",
+				"value": "adlsgen2container"
+			},
+			"filePath": {
+				"type": "string",
+				"value": "target"
+			}
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "7973e7ce-1a0e-44e2-b1ab-ddb1e2249f18",
+		"tenantId": "100a7e00-c249-4c60-b1c3-70200fb7e3dc"
+	}
+}

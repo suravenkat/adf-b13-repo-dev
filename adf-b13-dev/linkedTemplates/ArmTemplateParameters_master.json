@@ -1,0 +1,48 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-b13-dev"
+		},
+		"ls_adls_source_accountKey": {
+			"value": ""
+		},
+		"ls_source_sql_connectionString": {
+			"value": ""
+		},
+		"ls_target_db_connectionString": {
+			"value": ""
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://adf-b13-keyvault-dev.vault.azure.net/"
+		},
+		"RestService1_properties_typeProperties_url": {
+			"value": "https://reqres.in/api/users?page=2"
+		},
+		"RestService2_properties_typeProperties_url": {
+			"value": "https://reqres.in/api/users"
+		},
+		"ls_Rest_API_Key_properties_typeProperties_url": {
+			"value": "https://reqres.in/api/users"
+		},
+		"ls_adls_source_properties_typeProperties_url": {
+			"value": "https://adlsb13gen2.dfs.core.windows.net"
+		},
+		"ls_keyvault_sql_properties_typeProperties_connectionString_secretName": {
+			"value": "adf-b13secret"
+		},
+		"TumblingWindow_Trigger_properties_pipeline_parameters_StartDate": {
+			"value": "@trigger().outputs.windowStartTime"
+		},
+		"TumblingWindow_Trigger_properties_pipeline_parameters_EndDate": {
+			"value": "@trigger().outputs.windowEndTime"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

@@ -182,12 +182,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"TumblingWindow_Trigger_properties_pipeline_parameters_StartDate": {
-						"value": "[parameters('TumblingWindow_Trigger_properties_pipeline_parameters_StartDate')]"
-					},
-					"TumblingWindow_Trigger_properties_pipeline_parameters_EndDate": {
-						"value": "[parameters('TumblingWindow_Trigger_properties_pipeline_parameters_EndDate')]"
 					}
 				}
 			},
@@ -208,6 +202,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"TumblingWindow_Trigger_properties_pipeline_parameters_StartDate": {
+						"value": "[parameters('TumblingWindow_Trigger_properties_pipeline_parameters_StartDate')]"
+					},
+					"TumblingWindow_Trigger_properties_pipeline_parameters_EndDate": {
+						"value": "[parameters('TumblingWindow_Trigger_properties_pipeline_parameters_EndDate')]"
 					}
 				}
 			},

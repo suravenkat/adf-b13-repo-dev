@@ -1,0 +1,29 @@
+{
+	"name": "ds_Parquet1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls_source",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"FileName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().FileName",
+					"type": "Expression"
+				},
+				"folderPath": "/adb/lz_data/src_sys/asia/sales/",
+				"fileSystem": "adlsgen2container"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}

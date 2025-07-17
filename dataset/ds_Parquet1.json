@@ -5,18 +5,13 @@
 			"referenceName": "ls_adls_source",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"FileName": {
-				"type": "string"
-			}
-		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "@dataset().FileName",
+					"value": "lz_employees_last07",
 					"type": "Expression"
 				},
 				"folderPath": "/adb/lz_data/src_sys/asia/sales/",

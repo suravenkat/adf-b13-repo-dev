@@ -227,7 +227,7 @@
 			},
 			"src_sys_id": {
 				"type": "string",
-				"defaultValue": "2023"
+				"defaultValue": "2025"
 			},
 			"lz_root_path": {
 				"type": "string",

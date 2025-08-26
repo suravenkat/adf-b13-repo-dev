@@ -1,5 +1,5 @@
 {
-	"name": "ds_target_copy_file",
+	"name": "ds_new_source_copyfiles",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_adls_source",
@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "target2",
+				"folderPath": "sourcenew",
 				"fileSystem": "adlsgen2container"
 			},
 			"columnDelimiter": ",",
@@ -19,6 +19,5 @@
 			"quoteChar": "\""
 		},
 		"schema": []
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }

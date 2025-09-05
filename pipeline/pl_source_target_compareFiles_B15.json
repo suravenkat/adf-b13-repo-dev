@@ -1,5 +1,5 @@
 {
-	"name": "pl_source_target_compareFiles_bkp_B15",
+	"name": "pl_source_target_compareFiles_B15",
 	"properties": {
 		"activities": [
 			{
@@ -129,8 +129,8 @@
 				}
 			},
 			{
-				"name": "CheckNewFilesExist",
-				"type": "IfCondition",
+				"name": "ForEachNewFiles",
+				"type": "ForEach",
 				"dependsOn": [
 					{
 						"activity": "ForEachSourceFiles",
@@ -141,43 +141,13 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"expression": {
-						"value": "@greater(length(variables('NewFiles')), 0)",
+					"items": {
+						"value": "@variables('NewFiles')",
 						"type": "Expression"
 					},
-					"ifFalseActivities": [
+					"activities": [
 						{
-							"name": "LogNoNewFiles",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "LogMessage",
-								"value": "No new files to copy"
-							}
-						},
-						{
-							"name": "LogNoNewFiles_copy1",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "LogMessage",
-								"value": "No new files to copy"
-							}
-						}
-					],
-					"ifTrueActivities": [
-						{
-							"name": "CopyNewFiles",
+							"name": "CopySingleFile",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -192,8 +162,7 @@
 									"type": "DelimitedTextSource",
 									"storeSettings": {
 										"type": "AzureBlobFSReadSettings",
-										"recursive": true,
-										"enablePartitionDiscovery": false
+										"recursive": true
 									},
 									"formatSettings": {
 										"type": "DelimitedTextReadSettings"
@@ -210,15 +179,7 @@
 										"fileExtension": ".txt"
 									}
 								},
-								"enableStaging": false,
-								"translator": {
-									"type": "TabularTranslator",
-									"typeConversion": true,
-									"typeConversionSettings": {
-										"allowDataTruncation": true,
-										"treatBooleanAsNumber": false
-									}
-								}
+								"enableStaging": false
 							},
 							"inputs": [
 								{
@@ -226,7 +187,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"FileName": {
-											"value": "@variables('NewFiles')",
+											"value": "@item()",
 											"type": "Expression"
 										}
 									}
@@ -240,6 +201,30 @@
 							]
 						}
 					]
+				}
+			},
+			{
+				"name": "LogNoNewFiles",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ForEachSourceFiles",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "LogMessage",
+					"value": {
+						"value": "@concat('Num new files found. Total=', string(length(variables('NewFiles'))))",
+						"type": "Expression"
+					}
 				}
 			}
 		],

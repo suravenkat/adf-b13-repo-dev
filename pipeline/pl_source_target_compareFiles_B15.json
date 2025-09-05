@@ -1,0 +1,194 @@
+{
+	"name": "pl_source_target_compareFiles_B15",
+	"properties": {
+		"activities": [
+			{
+				"name": "GetSourceFiles",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"retryIntervalInSeconds": 30
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_getmetadata",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "GetTargetFiles",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"retryIntervalInSeconds": 30
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_target_copy_sql_table",
+						"type": "DatasetReference"
+					},
+					"fieldList": [],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "InitNewFiles",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "NewFiles",
+					"value": []
+				}
+			},
+			{
+				"name": "ForEachSourceFiles",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "GetSourceFiles",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "GetTargetFiles",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "InitNewFiles",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetSourceFiles').output.childItems",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "CheckFileNotInTarget",
+							"type": "IfCondition",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@not(contains(string(activity('GetTargetFiles').output.childItems), item().name))",
+									"type": "Expression"
+								},
+								"ifTrueActivities": [
+									{
+										"name": "AppendNewFiles",
+										"type": "AppendVariable",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "NewFiles",
+											"value": {
+												"value": "@item().name",
+												"type": "Expression"
+											}
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "CheckNewFilesExist",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "ForEachSourceFiles",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greater(length(variables('NewFiles')), 0)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "LogNoNewFiles",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "LogMessage",
+								"value": "No new files to copy"
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "CopyNewFiles",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "BlobSource",
+									"recursive": true
+								},
+								"enableStaging": false
+							}
+						}
+					]
+				}
+			}
+		],
+		"variables": {
+			"NewFiles": {
+				"type": "Array"
+			},
+			"LogMessage": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}

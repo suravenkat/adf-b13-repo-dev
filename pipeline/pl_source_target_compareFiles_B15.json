@@ -226,6 +226,30 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "LogNoNewFiles",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "FinalListFiles",
+					"value": {
+						"value": "@variables('NewFiles')",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"variables": {
@@ -234,6 +258,9 @@
 			},
 			"LogMessage": {
 				"type": "String"
+			},
+			"FinalListFiles": {
+				"type": "Array"
 			}
 		},
 		"annotations": []
